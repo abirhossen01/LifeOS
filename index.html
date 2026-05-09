@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARISE LIFE OS — Abir</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Rajdhani:wght@300;400;600;700&family=Noto+Sans+Bengali:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #D4AF37; --gold-light: #F4D03F; --gold-dim: #8B6914;
+  --black: #0A0A0A; --dark: #111111; --dark2: #1A1A1A; --dark3: #222222; --dark4: #2a2a2a;
+  --text: #E8E0CC; --text-dim: #888880; --border: rgba(212,175,55,0.2);
+  --red: #e74c3c; --green: #27ae60; --blue: #3498db; --orange: #f39c12;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--text);font-family:'Rajdhani','Noto Sans Bengali',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(212,175,55,0.04) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(212,175,55,0.03) 0%,transparent 50%);pointer-events:none;z-index:0;}
+
+/* LAYOUT */
+.app-wrap{display:flex;min-height:100vh;}
+.sidebar{width:220px;background:var(--dark2);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;transition:transform 0.3s;}
+.main-content{margin-left:220px;flex:1;padding:20px;position:relative;z-index:1;}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.hamburger{display:flex!important}}
+
+/* SIDEBAR */
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border);}
+.logo-title{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px;}
+.logo-sub{font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-top:2px;}
+.sidebar-nav{padding:12px 0;flex:1;}
+.nav-section{font-size:9px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;padding:8px 16px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all 0.2s;font-size:13px;color:var(--text-dim);border-left:2px solid transparent;}
+.nav-item:hover{background:rgba(212,175,55,0.05);color:var(--text);}
+.nav-item.active{background:rgba(212,175,55,0.08);color:var(--gold);border-left-color:var(--gold);}
+.nav-icon{font-size:16px;width:20px;text-align:center;}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border);}
+.xp-mini{font-size:10px;color:var(--text-dim);margin-bottom:5px;}
+.xp-mini-bar{height:4px;background:var(--dark3);border-radius:0;overflow:hidden;}
+.xp-mini-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));width:72%;}
+
+/* HAMBURGER */
+.hamburger{display:none;position:fixed;top:12px;right:12px;z-index:200;background:var(--dark2);border:1px solid var(--border);padding:8px;cursor:pointer;border-radius:2px;flex-direction:column;gap:4px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--gold);}
+
+/* HEADER */
+.page-header{background:linear-gradient(135deg,var(--dark2),#1a1500);border:1px solid var(--gold-dim);border-radius:4px;padding:22px 28px;margin-bottom:18px;position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.page-header-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:4px;}
+.page-header-name{font-family:'Cinzel',serif;font-size:26px;color:var(--gold);text-shadow:0 0 20px rgba(212,175,55,0.3);}
+.rank-badge-header{text-align:right;}
+.rank-label{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
+.rank-value{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);}
+.xp-bar-wrap{margin-top:14px;}
+.xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:5px;}
+.xp-bar{height:7px;background:var(--dark3);border:1px solid var(--border);overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));animation:xpFill 1.5s ease-out;}
+@keyframes xpFill{from{width:0}}
+
+/* PRAYER BAR */
+.prayer-bar{background:var(--dark2);border:1px solid var(--border);border-radius:4px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.prayer-title{font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-transform:uppercase;flex-shrink:0;}
+.prayers{display:flex;gap:6px;flex-wrap:wrap;}
+.prayer{padding:4px 10px;border-radius:2px;font-size:11px;font-weight:600;letter-spacing:1px;border:1px solid;cursor:pointer;transition:all 0.2s;}
+.prayer.done{background:rgba(212,175,55,0.1);border-color:var(--gold-dim);color:var(--gold);}
+.prayer.pending{background:transparent;border-color:rgba(255,255,255,0.1);color:var(--text-dim);}
+.prayer-xp{margin-left:auto;font-size:11px;color:var(--gold);}
+
+/* CARDS */
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:4px;padding:18px;position:relative;overflow:hidden;transition:border-color 0.3s;animation:fadeUp 0.4s ease both;}
+.card:hover{border-color:var(--gold-dim);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);opacity:0;transition:opacity 0.3s;}
+.card:hover::before{opacity:1;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.card-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;}
+
+/* GRIDS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;}
+@media(max-width:900px){.grid-3{grid-template-columns:1fr 1fr}.grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* STATS */
+.stat{margin-bottom:11px;}
+.stat-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;}
+.stat-name{color:var(--text);font-weight:600;}
+.stat-val{color:var(--gold);font-family:'Cinzel',serif;font-size:11px;}
+.stat-bar{height:4px;background:var(--dark3);overflow:hidden;}
+.stat-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width 0.8s;}
+
+/* QUESTS */
+.quest{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.quest:last-child{border-bottom:none;}
+.quest-check{width:16px;height:16px;border:1px solid var(--gold-dim);border-radius:1px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:10px;color:var(--gold);}
+.quest-check.done{background:var(--gold-dim);border-color:var(--gold);}
+.quest-name{font-size:13px;flex:1;}
+.quest-name.done{text-decoration:line-through;color:var(--text-dim);}
+.quest-xp{font-size:10px;color:var(--gold);letter-spacing:1px;flex-shrink:0;}
+.quest-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:0 4px;opacity:0.5;transition:opacity 0.2s;}
+.quest-del:hover{opacity:1;}
+
+/* BUTTONS */
+.btn{padding:7px 16px;border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;border:1px solid;font-weight:600;}
+.btn-gold{background:rgba(212,175,55,0.1);border-color:var(--gold-dim);color:var(--gold);}
+.btn-gold:hover{background:rgba(212,175,55,0.2);}
+.btn-dark{background:var(--dark3);border-color:var(--border);color:var(--text-dim);}
+.btn-dark:hover{border-color:var(--gold-dim);color:var(--text);}
+.btn-red{background:rgba(231,76,60,0.1);border-color:rgba(231,76,60,0.3);color:var(--red);}
+.btn-green{background:rgba(39,174,96,0.1);border-color:rgba(39,174,96,0.3);color:var(--green);}
+.btn-sm{padding:4px 10px;font-size:11px;}
+
+/* INPUTS */
+.input{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:2px;font-family:'Rajdhani','Noto Sans Bengali',sans-serif;font-size:13px;width:100%;transition:border-color 0.2s;outline:none;}
+.input:focus{border-color:var(--gold-dim);}
+.input-wrap{margin-bottom:12px;}
+.input-label{font-size:10px;color:var(--gold-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+textarea.input{resize:vertical;min-height:80px;line-height:1.6;}
+select.input{cursor:pointer;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--dark2);border:1px solid var(--gold-dim);border-radius:4px;padding:24px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.modal-title{font-family:'Cinzel',serif;font-size:14px;color:var(--gold);letter-spacing:2px;margin-bottom:18px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark2);border:1px solid var(--gold-dim);color:var(--gold);padding:10px 18px;border-radius:3px;font-size:13px;z-index:2000;animation:toastIn 0.3s ease;pointer-events:none;}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BADGES */
+.badge{font-size:9px;padding:2px 7px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;font-weight:700;}
+.badge-s{background:rgba(212,175,55,0.2);color:var(--gold);border:1px solid var(--gold-dim);}
+.badge-a{background:rgba(39,174,96,0.15);color:#2ecc71;}
+.badge-b{background:rgba(52,152,219,0.15);color:#3498db;}
+.badge-c{background:rgba(231,76,60,0.15);color:#e74c3c;}
+.badge-tag{font-size:9px;padding:2px 8px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+
+/* ROWS */
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.fin-row:last-child{border-bottom:none;}
+.fin-label{font-size:13px;color:var(--text);}
+.fin-amount{font-family:'Cinzel',serif;font-size:13px;font-weight:600;}
+.fin-income{color:var(--gold);}
+.fin-expense{color:var(--red);}
+.fin-save{color:var(--green);}
+
+/* JOURNAL */
+.journal-section{margin-bottom:16px;}
+.journal-section-title{font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.journal-section-title::after{content:'';flex:1;height:1px;background:rgba(212,175,55,0.15);}
+.journal-entry{background:var(--dark3);border:1px solid rgba(212,175,55,0.08);border-left:3px solid var(--gold-dim);padding:12px 14px;border-radius:0 3px 3px 0;margin-bottom:8px;}
+.journal-entry-meta{display:flex;justify-content:space-between;margin-bottom:6px;}
+.journal-date{font-size:10px;color:var(--gold-dim);letter-spacing:1px;}
+.journal-text{font-size:13px;color:var(--text-dim);line-height:1.7;}
+
+/* BOOK CARD */
+.book-card{background:var(--dark3);border:1px solid rgba(212,175,55,0.1);border-radius:3px;padding:14px;margin-bottom:10px;transition:border-color 0.2s;}
+.book-card:hover{border-color:var(--gold-dim);}
+.book-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.book-author{font-size:11px;color:var(--text-dim);margin-bottom:10px;}
+.book-status{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;}
+.status-reading{color:var(--gold);}
+.status-done{color:var(--green);}
+.status-queue{color:var(--text-dim);}
+
+/* HEATMAP */
+.heatmap{display:flex;gap:3px;flex-wrap:wrap;}
+.heat-day{width:14px;height:14px;border-radius:1px;cursor:pointer;transition:transform 0.1s;border:1px solid rgba(255,255,255,0.02);}
+.heat-day:hover{transform:scale(1.4);}
+.heat-0{background:var(--dark3);}
+.heat-1{background:rgba(212,175,55,0.2);}
+.heat-2{background:rgba(212,175,55,0.45);}
+.heat-3{background:rgba(212,175,55,0.7);}
+.heat-4{background:var(--gold);}
+
+/* PILLAR */
+.pillar{background:var(--dark3);border:1px solid rgba(212,175,55,0.1);border-radius:3px;padding:12px;text-align:center;}
+.pillar-icon{font-size:22px;display:block;margin-bottom:3px;}
+.pillar-name{font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.pillar-score{font-family:'Cinzel',serif;font-size:20px;color:var(--gold);font-weight:600;}
+
+/* PROJECT */
+.project{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.project:last-child{border-bottom:none;}
+.project-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dot-red{background:#e74c3c;box-shadow:0 0 6px #e74c3c;}
+.dot-yellow{background:#f39c12;box-shadow:0 0 6px #f39c12;}
+.dot-green{background:#27ae60;box-shadow:0 0 6px #27ae60;}
+.dot-blue{background:#3498db;box-shadow:0 0 6px #3498db;}
+
+/* SECTION HEADER */
+.section-header{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:var(--gold-dim);text-transform:uppercase;margin:20px 0 12px;display:flex;align-items:center;gap:12px;}
+.section-header::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent);}
+
+/* ADMIN PANEL */
+.admin-panel{background:rgba(212,175,55,0.03);border:1px solid rgba(212,175,55,0.15);border-radius:4px;padding:14px;margin-bottom:14px;}
+.admin-title{font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+
+/* TRACKER TABLE */
+.tracker{width:100%;border-collapse:collapse;font-size:12px;}
+.tracker th{padding:8px 10px;text-align:left;font-size:9px;letter-spacing:2px;color:var(--gold-dim);text-transform:uppercase;border-bottom:1px solid var(--border);font-weight:600;}
+.tracker td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.tracker tr:hover td{background:rgba(212,175,55,0.02);}
+
+/* RPG */
+.rpg-card{border-color:var(--gold-dim)!important;background:linear-gradient(135deg,var(--dark2),#150f00)!important;}
+
+/* FOOTER */
+.footer{text-align:center;padding:20px;font-size:10px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;border-top:1px solid var(--border);margin-top:20px;}
+.footer span{color:var(--gold-dim);}
+
+/* TABS (for journal) */
+.tab-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.tab-pill{padding:6px 14px;font-size:11px;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-dim);border-radius:20px;transition:all 0.2s;font-family:'Cinzel',serif;}
+.tab-pill.active,.tab-pill:hover{background:rgba(212,175,55,0.1);border-color:var(--gold-dim);color:var(--gold);}
+
+/* RANGE */
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--dark3);border-radius:0;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--gold);cursor:pointer;border-radius:0;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:30px;color:var(--text-dim);font-size:13px;}
+.empty-state .empty-icon{font-size:32px;margin-bottom:8px;}
+
+.mb-8{margin-bottom:8px;}
+.mb-14{margin-bottom:14px;}
+.flex-end{display:flex;justify-content:flex-end;}
+.gap-8{gap:8px;}
+.flex{display:flex;}
+</style>
+</head>
+<body>
+
+<!-- HAMBURGER -->
+<div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-title">ARISE LIFE OS</div>
+    <div class="logo-sub">আইডিয়া থেকে অ্যাপ বানাও</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Dashboard</div>
+    <div class="nav-item" onclick="navigate('daily')"><span class="nav-icon">📅</span>Daily Log</div>
+    <div class="nav-item" onclick="navigate('journal')"><span class="nav-icon">📓</span>Journal</div>
+    <div class="nav-section">Growth</div>
+    <div class="nav-item" onclick="navigate('skills')"><span class="nav-icon">📚</span>Skills</div>
+    <div class="nav-item" onclick="navigate('books')"><span class="nav-icon">📖</span>Books</div>
+    <div class="nav-item" onclick="navigate('fitness')"><span class="nav-icon">🏋️</span>Fitness</div>
+    <div class="nav-section">Life</div>
+    <div class="nav-item" onclick="navigate('finance')"><span class="nav-icon">💰</span>Finance</div>
+    <div class="nav-item" onclick="navigate('mindset')"><span class="nav-icon">🧠</span>Mindset</div>
+    <div class="nav-item" onclick="navigate('rpg')"><span class="nav-icon">⚔️</span>RPG Sheet</div>
+    <div class="nav-section">System</div>
+    <div class="nav-item" onclick="navigate('admin')"><span class="nav-icon">⚙️</span>Admin Panel</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="xp-mini">XP: <span id="total-xp-sidebar">2,450</span> / 3,000 → Silver</div>
+    <div class="xp-mini-bar"><div class="xp-mini-fill" id="xp-mini-fill"></div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-content" id="main-content">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="page-header-title">Personal Life OS · v2.0</div>
+        <div class="page-header-name" id="header-name">ARISE LIFE OS</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Data Analyst & AI-Powered Creator · Abir Hossen · Sylhet, BD</div>
+      </div>
+      <div class="rank-badge-header">
+        <div class="rank-label">Current Rank</div>
+        <div class="rank-value" id="rank-display">🥉 BRONZE II</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">Total XP: <span id="total-xp">2,450</span></div>
+      </div>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-label"><span>XP Progress → Silver I</span><span style="color:var(--gold)" id="xp-fraction">2,450 / 3,000 XP</span></div>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:72%"></div></div>
+    </div>
+  </div>
+
+  <!-- PRAYER BAR -->
+  <div class="prayer-bar">
+    <div class="prayer-title">🕌 নামাজ</div>
+    <div class="prayers" id="prayer-list"></div>
+    <div class="prayer-xp" id="prayer-xp-label">+0 XP</div>
+  </div>
+
+  <!-- PAGES -->
+  <div id="page-dashboard"></div>
+  <div id="page-daily" style="display:none"></div>
+  <div id="page-journal" style="display:none"></div>
+  <div id="page-skills" style="display:none"></div>
+  <div id="page-books" style="display:none"></div>
+  <div id="page-fitness" style="display:none"></div>
+  <div id="page-finance" style="display:none"></div>
+  <div id="page-mindset" style="display:none"></div>
+  <div id="page-rpg" style="display:none"></div>
+  <div id="page-admin" style="display:none"></div>
+
+  <div class="footer">ARISE LIFE OS · <span>Abir Hossen</span> · আইডিয়া থেকে অ্যাপ বানাও · 2026</div>
+</div>
+
+<!-- MODALS -->
+<!-- (Modals remain unchanged) -->
+<div class="modal-overlay" id="modal-quest">
+  <div class="modal">
+    <div class="modal-title" id="modal-quest-title">✦ NEW QUEST</div>
+    <input type="hidden" id="edit-quest-id">
+    <div class="input-wrap"><div class="input-label">Quest Name</div><input class="input" id="quest-input-name" placeholder="কাজের নাম লিখো..."></div>
+    <div class="input-wrap"><div class="input-label">XP Reward</div><input class="input" type="number" id="quest-input-xp" placeholder="20" min="5" max="500"></div>
+    <div class="input-wrap"><div class="input-label">Category</div>
+      <select class="input" id="quest-input-cat">
+        <option value="📿 Spiritual">📿 Spiritual</option>
+        <option value="💻 Coding">💻 Coding</option>
+        <option value="📚 Study">📚 Study</option>
+        <option value="🏋️ Fitness">🏋️ Fitness</option>
+        <option value="💰 Finance">💰 Finance</option>
+        <option value="🧠 Mindset">🧠 Mindset</option>
+        <option value="📹 YouTube">📹 YouTube</option>
+        <option value="♟️ Chess">♟️ Chess</option>
+        <option value="📊 Data">📊 Data</option>
+        <option value="⚡ Other">⚡ Other</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-dark" onclick="closeModal('modal-quest')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveQuest()">Save Quest</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-skill">
+  <div class="modal">
+    <div class="modal-title" id="modal-skill-title">✦ ADD SKILL</div>
+    <input type="hidden" id="edit-skill-id">
+    <div class="input-wrap"><div class="input-label">Skill Name</div><input class="input" id="skill-input-name" placeholder="Skill এর নাম..."></div>
+    <div class="input-wrap"><div class="input-label">Category</div>
+      <select class="input" id="skill-input-cat">
+        <option value="💻 Web Dev">💻 Web Dev</option>
+        <option value="📊 Data Analysis">📊 Data Analysis</option>
+        <option value="🤖 AI / Vibe Coding">🤖 AI / Vibe Coding</option>
+        <option value="📖 BBA">📖 BBA</option>
+        <option value="🇬🇧 English">🇬🇧 English</option>
+        <option value="♟️ Chess">♟️ Chess</option>
+        <option value="🎨 Design">🎨 Design</option>
+        <option value="⚡ Other">⚡ Other</option>
+      </select>
+    </div>
+    <div class="input-wrap">
+      <div class="input-label">Progress: <span id="skill-range-val">50</span>%</div>
+      <input type="range" min="0" max="100" value="50" id="skill-input-progress" oninput="document.getElementById('skill-range-val').textContent=this.value">
+    </div>
+    <div class="input-wrap"><div class="input-label">Notes (optional)</div><input class="input" id="skill-input-notes" placeholder="Resources, course name..."></div>
+    <div class="modal-actions">
+      <button class="btn btn-dark" onclick="closeModal('modal-skill')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveSkill()">Save Skill</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-book">
+  <div class="modal">
+    <div class="modal-title" id="modal-book-title">✦ ADD BOOK</div>
+    <input type="hidden" id="edit-book-id">
+    <div class="input-wrap"><div class="input-label">Book Title</div><input class="input" id="book-input-title" placeholder="বইয়ের নাম..."></div>
+    <div class="input-wrap"><div class="input-label">Author</div><input class="input" id="book-input-author" placeholder="লেখকের নাম..."></div>
+    <div class="input-wrap"><div class="input-label">Status</div>
+      <select class="input" id="book-input-status">
+        <option value="reading">📖 Reading Now</option>
+        <option value="done">✅ Completed</option>
+        <option value="queue">📋 In Queue</option>
+      </select>
+    </div>
+    <div class="input-wrap">
+      <div class="input-label">Progress: <span id="book-range-val">0</span>%</div>
+      <input type="range" min="0" max="100" value="0" id="book-input-progress" oninput="document.getElementById('book-range-val').textContent=this.value">
+    </div>
+    <div class="input-wrap"><div class="input-label">Key Lesson / Note</div><textarea class="input" id="book-input-note" placeholder="বই থেকে কী শিখলাম..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-dark" onclick="closeModal('modal-book')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveBook()">Save Book</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-daily">
+  <div class="modal">
+    <div class="modal-title">✦ LOG TODAY</div>
+    <div class="input-wrap"><div class="input-label">Wake Up Time</div><input class="input" type="time" id="daily-wake"></div>
+    <div class="input-wrap"><div class="input-label">Deep Work (hours)</div><input class="input" type="number" step="0.5" id="daily-deepwork" placeholder="0"></div>
+    <div class="input-wrap"><div class="input-label">Study (hours)</div><input class="input" type="number" step="0.5" id="daily-study" placeholder="0"></div>
+    <div class="input-wrap"><div class="input-label">Workout</div>
+      <select class="input" id="daily-workout">
+        <option value="none">None</option>
+        <option value="🥊 Boxing">🥊 Boxing</option>
+        <option value="🏋️ Weight Training">🏋️ Weight Training</option>
+        <option value="🚶 Walk">🚶 Walk</option>
+      </select>
+    </div>
+    <div class="input-wrap"><div class="input-label">Day Rating</div>
+      <select class="input" id="daily-rating">
+        <option value="S">S — Legendary</option>
+        <option value="A">A — Great</option>
+        <option value="B">B — Okay</option>
+        <option value="C">C — Weak</option>
+        <option value="F">F — Zero Day</option>
+      </select>
+    </div>
+    <div class="input-wrap"><div class="input-label">Today's Win</div><input class="input" id="daily-win" placeholder="আজকে কী ভালো হলো..."></div>
+    <div class="input-wrap"><div class="input-label">Struggle</div><input class="input" id="daily-struggle" placeholder="কোথায় সমস্যা হলো..."></div>
+    <div class="modal-actions">
+      <button class="btn btn-dark" onclick="closeModal('modal-daily')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveDailyLog()">Save Log</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA STORE (localStorage)
+// ============================================================
+const DB = {
+  get(key, def){ try{ const v=localStorage.getItem('arise_'+key); return v?JSON.parse(v):def; }catch(e){return def;} },
+  set(key,val){ try{ localStorage.setItem('arise_'+key,JSON.stringify(val)); }catch(e){} }
+};
+
+// ============================================================
+// DEFAULT DATA
+// ============================================================
+function initData(){
+  if(!DB.get('inited')){
+    DB.set('quests',[
+      {id:1,name:'ফজর নামাজ + Quran ১৫ মিনিট',xp:20,cat:'📿 Spiritual',done:false},
+      {id:2,name:'2h Deep Work (Coding/Data)',xp:40,cat:'💻 Coding',done:false},
+      {id:3,name:'Boxing / Weight Training',xp:30,cat:'🏋️ Fitness',done:false},
+      {id:4,name:'BBA Subject পড়া (1h)',xp:20,cat:'📚 Study',done:false},
+      {id:5,name:'YouTube Script / Content',xp:25,cat:'📹 YouTube',done:false},
+      {id:6,name:'Chess 1 Game',xp:10,cat:'♟️ Chess',done:false},
+    ]);
+    DB.set('skills',[
+      {id:1,name:'HTML & CSS',cat:'💻 Web Dev',progress:85,notes:''},
+      {id:2,name:'JavaScript',cat:'💻 Web Dev',progress:65,notes:''},
+      {id:3,name:'React',cat:'💻 Web Dev',progress:45,notes:''},
+      {id:4,name:'Excel',cat:'📊 Data Analysis',progress:55,notes:'Primary data tool'},
+      {id:5,name:'SQL',cat:'📊 Data Analysis',progress:30,notes:'Learning'},
+      {id:6,name:'Power BI',cat:'📊 Data Analysis',progress:15,notes:'Starting soon'},
+      {id:7,name:'Python (Data)',cat:'📊 Data Analysis',progress:25,notes:'Pandas, Numpy'},
+      {id:8,name:'Prompt Engineering',cat:'🤖 AI / Vibe Coding',progress:75,notes:'Core skill'},
+      {id:9,name:'AI App Building',cat:'🤖 AI / Vibe Coding',progress:70,notes:'Claude, Gemini APIs'},
+      {id:10,name:'Accounting',cat:'📖 BBA',progress:65,notes:''},
+      {id:11,name:'English',cat:'🇬🇧 English',progress:45,notes:'Grammar + Speaking'},
+      {id:12,name:'Chess',cat:'♟️ Chess',progress:25,notes:'Learning from scratch'},
+    ]);
+    DB.set('books',[
+      {id:1,title:'Atomic Habits',author:'James Clear',status:'done',progress:100,note:'1% better every day। Small habits = big results।'},
+      {id:2,title:'The Miracle Morning',author:'Hal Elrod',status:'done',progress:100,note:'সকাল বদলালে জীবন বদলায়।'},
+      {id:3,title:'Rich Dad Poor Dad',author:'Robert Kiyosaki',status:'reading',progress:65,note:'Assets vs Liabilities বোঝা সবচেয়ে গুরুত্বপূর্ণ।'},
+      {id:4,title:'Deep Work',author:'Cal Newport',status:'queue',progress:0,note:''},
+    ]);
+    DB.set('prayers',{fajr:false,dhuhr:false,asr:false,maghrib:false,isha:false});
+    DB.set('daily_logs',[]);
+    DB.set('journals',{});
+    DB.set('totalXP',2450);
+    DB.set('lastReset', new Date().toDateString());
+    DB.set('inited',true);
+  }
+}
+
+// ============================================================
+// NEXT DAY FEATURE
+// ============================================================
+function checkNextDay() {
+  const lastDate = DB.get('lastReset');
+  const todayDate = new Date().toDateString();
+
+  if (lastDate !== todayDate) {
+    performNewDayReset();
+    DB.set('lastReset', todayDate);
+    toast("🌅 New Day Reset! Good luck with today's quests.");
+  }
+}
+
+function performNewDayReset() {
+  // Reset Quests
+  const quests = DB.get('quests', []);
+  quests.forEach(q => q.done = false);
+  DB.set('quests', quests);
+
+  // Reset Prayers
+  DB.set('prayers', {fajr:false, dhuhr:false, asr:false, maghrib:false, isha:false});
+
+  // UI Updates
+  renderPrayers();
+  if (currentPage === 'dashboard') renderDashboard();
+  if (currentPage === 'admin') renderAdmin();
+}
+
+function manualNewDay() {
+  if (confirm("Are you sure you want to start a New Day? Today's quest checkmarks will be cleared.")) {
+    performNewDayReset();
+    DB.set('lastReset', new Date().toDateString());
+    toast("🌅 New Day started manually!");
+  }
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+let currentPage='dashboard';
+function uid(){ return Date.now()+Math.random().toString(36).slice(2); }
+function toast(msg){
+  const t=document.createElement('div');
+  t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
+
+function getRank(xp){
+  if(xp<500) return '🪨 Iron';
+  if(xp<1500) return '🥉 Bronze I';
+  if(xp<3000) return '🥉 Bronze II';
+  if(xp<6000) return '🥈 Silver';
+  if(xp<10000) return '🥇 Gold';
+  if(xp<20000) return '💎 Platinum';
+  return '👑 Legend';
+}
+function getXPMax(xp){
+  if(xp<500)return 500;
+  if(xp<1500)return 1500;
+  if(xp<3000)return 3000;
+  if(xp<6000)return 6000;
+  if(xp<10000)return 10000;
+  return 20000;
+}
+
+function updateHeaderXP(){
+  const xp=DB.get('totalXP',2450);
+  const max=getXPMax(xp);
+  const prev=getXPMax(xp-1);
+  const pct=Math.round(((xp-(prev===max?0:prev))/(max-(prev===max?0:prev)))*100);
+  document.getElementById('total-xp').textContent=xp.toLocaleString();
+  document.getElementById('total-xp-sidebar').textContent=xp.toLocaleString();
+  document.getElementById('rank-display').textContent=getRank(xp);
+  document.getElementById('xp-fill').style.width=pct+'%';
+  document.getElementById('xp-mini-fill').style.width=pct+'%';
+  document.getElementById('xp-fraction').textContent=`${xp.toLocaleString()} / ${max.toLocaleString()} XP`;
+}
+
+// ============================================================
+// PRAYER BAR
+// ============================================================
+function renderPrayers(){
+  const prayers=DB.get('prayers',{fajr:false,dhuhr:false,asr:false,maghrib:false,isha:false});
+  const names={fajr:'ফজর',dhuhr:'যোহর',asr:'আসর',maghrib:'মাগরিব',isha:'ইশা'};
+  const list=document.getElementById('prayer-list');
+  list.innerHTML='';
+  let count=0;
+  Object.entries(names).forEach(([key,label])=>{
+    const done=prayers[key];
+    if(done) count++;
+    const d=document.createElement('div');
+    d.className='prayer '+(done?'done':'pending');
+    d.textContent=label+(done?' ✓':'');
+    d.onclick=()=>{prayers[key]=!prayers[key];DB.set('prayers',prayers);renderPrayers();};
+    list.appendChild(d);
+  });
+  document.getElementById('prayer-xp-label').textContent=`+${count*10} XP (${count}/5)`;
+}
+
+// ============================================================
+// NAVIGATE
+// ============================================================
+function navigate(page){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.textContent.trim().toLowerCase().includes(page.substring(0,4).toLowerCase())) n.classList.add('active');
+  });
+  ['dashboard','daily','journal','skills','books','fitness','finance','mindset','rpg','admin'].forEach(p=>{
+    document.getElementById('page-'+p).style.display = p===page?'block':'none';
+  });
+  currentPage=page;
+  if(page==='dashboard') renderDashboard();
+  else if(page==='daily') renderDaily();
+  else if(page==='journal') renderJournal();
+  else if(page==='skills') renderSkills();
+  else if(page==='books') renderBooks();
+  else if(page==='fitness') renderFitness();
+  else if(page==='finance') renderFinance();
+  else if(page==='mindset') renderMindset();
+  else if(page==='rpg') renderRPG();
+  else if(page==='admin') renderAdmin();
+  if(window.innerWidth<768) document.getElementById('sidebar').classList.remove('open');
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard(){
+  const quests=DB.get('quests',[]);
+  const done=quests.filter(q=>q.done).length;
+  const todayXP=quests.filter(q=>q.done).reduce((a,q)=>a+q.xp,0);
+  const skills=DB.get('skills',[]);
+  const logs=DB.get('daily_logs',[]);
+  const streak=Math.min(logs.length,12);
+
+  document.getElementById('page-dashboard').innerHTML=`
+    <div class="grid-4">
+      <div class="card" style="text-align:center">
+        <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase">Quests Today</div>
+        <div style="font-family:'Cinzel',serif;font-size:36px;color:var(--gold);margin:8px 0">${done}/${quests.length}</div>
+        <div style="font-size:11px;color:var(--text-dim)">${Math.round(done/Math.max(quests.length,1)*100)}% Complete</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase">Today's XP</div>
+        <div style="font-family:'Cinzel',serif;font-size:36px;color:var(--gold);margin:8px 0">${todayXP}</div>
+        <div style="font-size:11px;color:var(--text-dim)">Quests Completed</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase">Day Streak</div>
+        <div style="font-size:36px;margin:8px 0">🔥</div>
+        <div style="font-family:'Cinzel',serif;font-size:20px;color:var(--gold)">${streak} Days</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase">Skills</div>
+        <div style="font-family:'Cinzel',serif;font-size:36px;color:var(--gold);margin:8px 0">${skills.length}</div>
+        <div style="font-size:11px;color:var(--text-dim)">Avg ${Math.round(skills.reduce((a,s)=>a+s.progress,0)/Math.max(skills.length,1))}% Progress</div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">⚔️ Today's Quests</div>
+          <div style="display:flex;gap:5px;">
+            <button class="btn btn-dark btn-sm" onclick="manualNewDay()">🔄 New Day</button>
+            <button class="btn btn-gold btn-sm" onclick="openQuestModal()">+ Add</button>
+          </div>
+        </div>
+        <div id="dash-quests">${renderQuestList(quests)}</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🏛️ 4 Pillars</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          ${[['🕌','Spiritual',72],['💰','Financial',35],['🏋️','Fitness',60],['🧠','Mindset',55]].map(([icon,name,score])=>`
+          <div class="pillar"><span class="pillar-icon">${icon}</span><div class="pillar-name">${name}</div><div class="pillar-score">${score}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 Top Skills</div></div>
+        ${skills.slice(0,5).map(s=>`
+        <div class="stat">
+          <div class="stat-top"><span class="stat-name">${s.cat.split(' ')[0]} ${s.name}</span><span class="stat-val">${s.progress}%</span></div>
+          <div class="stat-bar"><div class="stat-fill" style="width:${s.progress}%"></div></div>
+        </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🔥 Habit Heatmap</div></div>
+        <div class="heatmap" id="heatmap-dash"></div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:8px;font-size:10px;color:var(--text-dim)">
+          <span>Less</span>
+          ${[1,2,3,4].map(l=>`<div style="width:12px;height:12px;background:rgba(212,175,55,${l*0.25});border-radius:1px"></div>`).join('')}
+          <span>More</span>
+        </div>
+      </div>
+    </div>
+  `;
+  // heatmap
+  const hm=document.getElementById('heatmap-dash');
+  if(hm) {
+    for(let i=0;i<60;i++){
+        const d=document.createElement('div');
+        const lvls=[0,1,1,2,2,2,3,3,4];
+        d.className='heat-day heat-'+lvls[Math.floor(Math.random()*lvls.length)];
+        hm.appendChild(d);
+    }
+  }
+}
+
+function renderQuestList(quests){
+  if(!quests.length) return '<div class="empty-state"><div class="empty-icon">⚔️</div>No quests yet. Add one!</div>';
+  return quests.map(q=>`
+  <div class="quest" id="quest-${q.id}">
+    <div class="quest-check ${q.done?'done':''}" onclick="toggleQuest(${q.id})">${q.done?'✓':''}</div>
+    <div class="quest-name ${q.done?'done':''}">${q.name}</div>
+    <div class="quest-xp">+${q.xp} XP</div>
+  </div>`).join('');
+}
+
+function toggleQuest(id){
+  const quests=DB.get('quests',[]);
+  const q=quests.find(x=>x.id===id);
+  if(!q) return;
+  q.done=!q.done;
+  DB.set('quests',quests);
+  const xp=DB.get('totalXP',2450);
+  DB.set('totalXP', q.done ? xp+q.xp : Math.max(0, xp-q.xp));
+  updateHeaderXP();
+  if(currentPage==='dashboard') renderDashboard();
+  else if(currentPage==='admin') renderAdmin();
+  toast(q.done?`+${q.xp} XP earned! 🔥`:`Quest unchecked`);
+}
+
+// ============================================================
+// MODAL FUNCTIONS, DAILY LOG, JOURNAL, SKILLS, BOOKS, FITNESS, FINANCE, MINDSET, RPG
+// (Rest of logic remains the same)
+// ============================================================
+
+function openQuestModal(id){
+  document.getElementById('modal-quest-title').textContent = id ? '✦ EDIT QUEST' : '✦ NEW QUEST';
+  document.getElementById('edit-quest-id').value = id||'';
+  if(id){
+    const q=DB.get('quests',[]).find(x=>String(x.id)===String(id));
+    if(q){ document.getElementById('quest-input-name').value=q.name; document.getElementById('quest-input-xp').value=q.xp; document.getElementById('quest-input-cat').value=q.cat; }
+  } else {
+    document.getElementById('quest-input-name').value='';
+    document.getElementById('quest-input-xp').value='20';
+  }
+  openModal('modal-quest');
+}
+
+function saveQuest(){
+  const name=document.getElementById('quest-input-name').value.trim();
+  const xp=parseInt(document.getElementById('quest-input-xp').value)||20;
+  const cat=document.getElementById('quest-input-cat').value;
+  const editId=document.getElementById('edit-quest-id').value;
+  if(!name){ toast('Quest name দাও!'); return; }
+  const quests=DB.get('quests',[]);
+  if(editId){
+    const q=quests.find(x=>String(x.id)===String(editId));
+    if(q){q.name=name;q.xp=xp;q.cat=cat;}
+  } else {
+    quests.push({id:uid(),name,xp,cat,done:false});
+  }
+  DB.set('quests',quests);
+  closeModal('modal-quest');
+  toast(editId?'Quest updated!':'Quest added! ⚔️');
+  if(currentPage==='dashboard') renderDashboard();
+  else if(currentPage==='admin') renderAdmin();
+}
+
+function deleteQuest(id){
+  if(!confirm('Delete this quest?')) return;
+  let quests=DB.get('quests',[]);
+  quests=quests.filter(q=>String(q.id)!==String(id));
+  DB.set('quests',quests);
+  toast('Quest deleted');
+  if(currentPage==='dashboard') renderDashboard();
+  else renderAdmin();
+}
+
+// Daily Logic
+function renderDaily(){
+  const logs=DB.get('daily_logs',[]).slice().reverse();
+  document.getElementById('page-daily').innerHTML=`
+    <div class="flex-end mb-14"><button class="btn btn-gold" onclick="openDailyModal()">+ Log Today</button></div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📅 Daily Logs</div></div>
+      ${logs.length===0?'<div class="empty-state"><div class="empty-icon">📅</div>No logs yet. Start tracking!</div>':`
+      <table class="tracker">
+        <thead><tr><th>Date</th><th>Wake</th><th>Deep Work</th><th>Study</th><th>Workout</th><th>Win</th><th>Rating</th><th></th></tr></thead>
+        <tbody>
+          ${logs.map(l=>`<tr>
+            <td>${l.date}</td><td>${l.wake||'-'}</td>
+            <td>${l.deepwork?l.deepwork+'h':'-'}</td>
+            <td>${l.study?l.study+'h':'-'}</td>
+            <td>${l.workout!=='none'?l.workout:'-'}</td>
+            <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.win||'-'}</td>
+            <td><span class="badge badge-${(l.rating||'b').toLowerCase()}">${l.rating||'B'}</span></td>
+            <td><button class="btn btn-red btn-sm" onclick="deleteLog('${l.id}')">✕</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`}
+    </div>
+  `;
+}
+
+function openDailyModal(){
+  document.getElementById('daily-wake').value='';
+  document.getElementById('daily-deepwork').value='';
+  document.getElementById('daily-study').value='';
+  document.getElementById('daily-workout').value='none';
+  document.getElementById('daily-rating').value='A';
+  document.getElementById('daily-win').value='';
+  document.getElementById('daily-struggle').value='';
+  openModal('modal-daily');
+}
+
+function saveDailyLog(){
+  const logs=DB.get('daily_logs',[]);
+  const now=new Date();
+  logs.push({
+    id:uid(),
+    date:now.toLocaleDateString('bn-BD'),
+    wake:document.getElementById('daily-wake').value,
+    deepwork:document.getElementById('daily-deepwork').value,
+    study:document.getElementById('daily-study').value,
+    workout:document.getElementById('daily-workout').value,
+    rating:document.getElementById('daily-rating').value,
+    win:document.getElementById('daily-win').value,
+    struggle:document.getElementById('daily-struggle').value,
+  });
+  DB.set('daily_logs',logs);
+  closeModal('modal-daily');
+  toast('Day logged! 📅');
+  renderDaily();
+}
+
+function deleteLog(id){
+  if(!confirm('Delete this log?')) return;
+  let logs=DB.get('daily_logs',[]);
+  logs=logs.filter(l=>l.id!==id);
+  DB.set('daily_logs',logs);
+  toast('Log deleted');
+  renderDaily();
+}
+
+// (Omitted unchanged functions for Skills, Books, Fitness, Finance, Mindset, RPG for brevity)
+function renderSkills(){
+  const skills=DB.get('skills',[]);
+  const cats=[...new Set(skills.map(s=>s.cat))];
+  document.getElementById('page-skills').innerHTML=`
+    <div class="flex-end mb-14"><button class="btn btn-gold" onclick="openSkillModal()">+ Add Skill</button></div>
+    ${cats.map(cat=>`
+    <div class="section-header">${cat}</div>
+    <div class="grid-2">
+      ${skills.filter(s=>s.cat===cat).map(s=>`
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">${s.name}</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-dark btn-sm" onclick="openSkillModal('${s.id}')">✏️</button>
+            <button class="btn btn-red btn-sm" onclick="deleteSkill('${s.id}')">✕</button>
+          </div>
+        </div>
+        <div class="stat-top" style="margin-bottom:6px"><span style="font-size:13px;color:var(--text-dim)">${s.notes||'No notes'}</span><span class="stat-val">${s.progress}%</span></div>
+        <div class="stat-bar" style="height:6px"><div class="stat-fill" style="width:${s.progress}%"></div></div>
+      </div>`).join('')}
+    </div>`).join('')}
+  `;
+}
+function openSkillModal(id){
+  document.getElementById('modal-skill-title').textContent = id ? '✦ EDIT SKILL' : '✦ ADD SKILL';
+  document.getElementById('edit-skill-id').value = id||'';
+  openModal('modal-skill');
+}
+function saveSkill(){
+  const skills = DB.get('skills', []);
+  const id = document.getElementById('edit-skill-id').value || uid();
+  const name = document.getElementById('skill-input-name').value;
+  const cat = document.getElementById('skill-input-cat').value;
+  const progress = document.getElementById('skill-input-progress').value;
+  const notes = document.getElementById('skill-input-notes').value;
+  
+  const existing = skills.findIndex(s => String(s.id) === String(id));
+  if(existing > -1) skills[existing] = {id, name, cat, progress: parseInt(progress), notes};
+  else skills.push({id, name, cat, progress: parseInt(progress), notes});
+  
+  DB.set('skills', skills);
+  closeModal('modal-skill');
+  renderSkills();
+}
+function deleteSkill(id){
+    const skills = DB.get('skills',[]).filter(s => String(s.id) !== String(id));
+    DB.set('skills', skills);
+    renderSkills();
+}
+
+function renderBooks(){
+    const books = DB.get('books',[]);
+    document.getElementById('page-books').innerHTML = `
+        <div class="flex-end mb-14"><button class="btn btn-gold" onclick="openModal('modal-book')">+ Add Book</button></div>
+        <div class="grid-2">${books.map(b => bookCard(b)).join('')}</div>
+    `;
+}
+function bookCard(b){
+    return `<div class="card">
+        <div class="card-header"><div class="book-title">${b.title}</div><button class="btn btn-red btn-sm" onclick="deleteBook('${b.id}')">✕</button></div>
+        <div class="book-author">${b.author}</div>
+        <div class="stat-bar"><div class="stat-fill" style="width:${b.progress}%"></div></div>
+    </div>`;
+}
+function saveBook(){
+    const books = DB.get('books',[]);
+    books.push({
+        id: uid(),
+        title: document.getElementById('book-input-title').value,
+        author: document.getElementById('book-input-author').value,
+        status: document.getElementById('book-input-status').value,
+        progress: document.getElementById('book-input-progress').value,
+        note: document.getElementById('book-input-note').value
+    });
+    DB.set('books', books);
+    closeModal('modal-book');
+    renderBooks();
+}
+function deleteBook(id){
+    DB.set('books', DB.get('books', []).filter(b => String(b.id) !== String(id)));
+    renderBooks();
+}
+
+function renderFitness(){
+    document.getElementById('page-fitness').innerHTML = `<div class="card"><div class="card-title">Fitness Tracker</div><p>Log your daily activities in the Daily Log section to see updates here.</p></div>`;
+}
+
+function renderFinance(){
+    const txns = DB.get('finance_txns', []);
+    document.getElementById('page-finance').innerHTML = `
+        <div class="card">
+            <div class="card-title">Transactions</div>
+            <div class="grid-2">
+                <input class="input" id="fin-amount" type="number" placeholder="Amount">
+                <button class="btn btn-gold" onclick="addTxn()">Add Transaction</button>
+            </div>
+            <table class="tracker" style="margin-top:10px">
+                ${txns.map(t => `<tr><td>৳${t.amount}</td><td>${t.date}</td></tr>`).join('')}
+            </table>
+        </div>
+    `;
+}
+function addTxn(){
+    const txns = DB.get('finance_txns', []);
+    txns.push({amount: document.getElementById('fin-amount').value, date: new Date().toLocaleDateString()});
+    DB.set('finance_txns', txns);
+    renderFinance();
+}
+
+function renderMindset(){
+    document.getElementById('page-mindset').innerHTML = `<div class="card"><div class="card-title">Mindset</div><p>Reflect on your growth and maintain a positive outlook.</p></div>`;
+}
+
+function renderRPG(){
+    const xp = DB.get('totalXP', 0);
+    document.getElementById('page-rpg').innerHTML = `
+        <div class="card rpg-card">
+            <div class="page-header-name">Character Sheet</div>
+            <div class="rank-value">Level: ${getRank(xp)}</div>
+            <div class="xp-mini">Total XP: ${xp}</div>
+        </div>
+    `;
+}
+
+function renderJournal(){
+    document.getElementById('page-journal').innerHTML = `<div class="card"><div class="card-title">Journal</div><p>Writing features coming soon.</p></div>`;
+}
+
+// ============================================================
+// ADMIN PANEL
+// ============================================================
+function renderAdmin(){
+  const quests=DB.get('quests',[]);
+  const lastReset = DB.get('lastReset');
+
+  document.getElementById('page-admin').innerHTML=`
+    <div class="section-header">⚙️ Admin Panel</div>
+    
+    <div class="card" style="margin-bottom:14px; border-left: 3px solid var(--blue);">
+      <div class="card-header"><div class="card-title">🌅 Daily System</div></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <div style="font-size:12px; color:var(--text-dim)">Last Reset Date:</div>
+            <div style="font-size:16px; color:var(--gold); font-family:'Cinzel'">${lastReset}</div>
+        </div>
+        <button class="btn btn-gold" onclick="manualNewDay()">🔄 Manual New Day Reset</button>
+      </div>
+      <div style="font-size:11px; color:var(--text-dim); margin-top:10px;">
+        This clears your prayer checkmarks and daily quest status. Total XP and history are kept safe.
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header"><div class="card-title">⭐ XP Management</div></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input class="input" type="number" id="xp-input" placeholder="Add/Subtract XP" style="width:180px">
+        <button class="btn btn-gold" onclick="addXP(1)">+ Add XP</button>
+        <button class="btn btn-red" onclick="addXP(-1)">− Remove XP</button>
+        <div style="font-size:13px;color:var(--text-dim)">Current: <span style="color:var(--gold);font-family:'Cinzel',serif">${DB.get('totalXP',2450).toLocaleString()} XP</span></div>
+      </div>
+    </div>
+
+    <div class="section-header">⚔️ Quest Manager</div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header">
+        <div class="card-title">All Quests (${quests.length})</div>
+        <button class="btn btn-gold btn-sm" onclick="openQuestModal()">+ New Quest</button>
+      </div>
+      ${quests.map(q=>`
+      <div class="quest">
+        <div class="quest-check ${q.done?'done':''}">${q.done?'✓':''}</div>
+        <div class="quest-name ${q.done?'done':''}">${q.name}</div>
+        <div class="quest-xp">+${q.xp} XP</div>
+        <button class="btn btn-dark btn-sm" onclick="openQuestModal('${q.id}')">✏️</button>
+        <button class="quest-del" onclick="deleteQuest('${q.id}')">🗑</button>
+      </div>`).join('')}
+    </div>
+
+    <div class="card" style="border-color:rgba(231,76,60,0.3)">
+      <div class="card-header"><div class="card-title" style="color:#e74c3c">⚠️ Danger Zone</div></div>
+      <button class="btn btn-red" onclick="clearAll()">Clear ALL Data</button>
+    </div>
+  `;
+}
+
+function addXP(sign){
+  const val=parseInt(document.getElementById('xp-input').value)||0;
+  if(!val){ toast('XP amount দাও!'); return; }
+  const xp=DB.get('totalXP',2450);
+  DB.set('totalXP',Math.max(0,xp+(val*sign)));
+  updateHeaderXP();
+  toast(`XP ${sign>0?'added':'removed'}: ${val}`);
+  renderAdmin();
+}
+
+function clearAll(){
+  if(!confirm('⚠️ ALL DATA DELETE হবে! Confirm?')) return;
+  localStorage.clear();
+  location.reload();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+initData();
+checkNextDay(); // Auto-check for new day on load
+renderPrayers();
+updateHeaderXP();
+navigate('dashboard');
+</script>
+</body>
+</html>
